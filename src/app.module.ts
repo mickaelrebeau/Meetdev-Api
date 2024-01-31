@@ -9,6 +9,8 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AvatarModule } from './avatar/avatar.module';
 import { AuthModule } from './auth/auth.module';
+import { DataModule } from './data/data.module';
+import { GoogleUserModule } from './google-user/google-user.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     AvatarModule,
     AuthModule,
+    DataModule,
+    GoogleUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
