@@ -2,22 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { unlinkSync } from 'fs';
-import { Avatar } from './model/avatar.entity';
+import { File } from './model/avatar.entity';
 
 @Injectable()
 export class AvatarService {
   constructor(
-    @InjectRepository(Avatar)
-    private readonly fileRepository: Repository<Avatar>,
+    @InjectRepository(File)
+    private readonly fileRepository: Repository<File>,
   ) {}
 
-  async uploadFile(file: Express.Multer.File): Promise<Avatar> {
+  async addFileToData(
+    dataId: string,
+    file: Express.Multer.File,
+  ): Promise<File> {
+    return await this.uploadFile(file);
+  }
+
+  async uploadFile(file: Express.Multer.File): Promise<File> {
     const newFile = await this.fileRepository.save(file);
     return newFile;
   }
 
-  async getByUserId(userId: string) {
-    return await this.fileRepository.find({ where: { user: { userId } } });
+  async getByDataId(id: string) {
+    return await this.fileRepository.findOne({ where: { data: { id } } });
   }
 
   async delete(id: string) {

@@ -1,8 +1,8 @@
-import { User } from 'src/user/model/user.entity';
+import { Data } from 'src/data/model/data.entity';
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Avatar {
+export class File {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -30,6 +30,6 @@ export class Avatar {
   @Column()
   size: number;
 
-  @OneToOne(() => User, (user) => user.avatar)
-  user: User;
+  @OneToOne(() => Data, (data) => data.avatar)
+  data: Data;
 }
