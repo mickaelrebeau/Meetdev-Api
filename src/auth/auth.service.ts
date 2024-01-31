@@ -2,13 +2,20 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from 'src/user/model/user.entity';
 import { UserService } from 'src/user/user.service';
 import * as argon2 from 'argon2';
-import { AuthentificationDto } from './dtos/auth.dto';
+import { AuthentificationDto, LoginDto } from './dtos/auth.dto';
+import { JwtService } from '@nestjs/jwt';
+import { GoogleDto } from '../google-user/dtos/google.dto';
+import { GoogleUserService } from 'src/google-user/google-user.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly googleUserService: GoogleUserService,
+    private jwtService: JwtService,
+  ) {}
 
-  async signup(user: AuthentificationDto): Promise<User> {
+  async signup(user: LoginDto): Promise<User> {
     const emailExist = await this.userService.getByEmail(user.email);
 
     if (emailExist) {
@@ -31,7 +38,25 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    return user;
+    const payload = { sub: user.id, email: user.email, id: user.id };
+
+    return {
+      token: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  async googleLogin(profile: GoogleDto) {
+    const user = await this.googleUserService.getByEmail(profile.email);
+
+    if (!user) {
+      await this.googleUserService.create(profile);
+    }
+
+    const payload = { sub: user.id, email: user.email, id: user.id };
+
+    return {
+      token: await this.jwtService.signAsync(payload),
+    };
   }
 
   hashData(data: string) {
