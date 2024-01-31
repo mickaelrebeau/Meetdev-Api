@@ -1,4 +1,4 @@
-import { Avatar } from 'src/avatar/model/avatar.entity';
+import { Data } from 'src/data/model/data.entity';
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -15,30 +15,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
-  bio: string;
-
-  @Column()
-  country: string;
-
-  @Column()
-  post: string;
-
-  @Column()
-  company: string;
-
-  @Column()
-  github_url: string;
-
-  @Column()
-  portfolio_url: string;
-
-  @Column('text', { array: true })
-  languages: string[];
-
-  @Column('jsonb')
-  filters: Filters;
-
-  @OneToOne(() => Avatar, (avatar) => avatar.user)
-  avatar: Avatar;
+  @OneToOne(() => Data, (data) => data.user, { nullable: true })
+  data: Data;
 }
