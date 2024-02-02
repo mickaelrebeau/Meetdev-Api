@@ -6,12 +6,15 @@ import { AuthentificationDto, LoginDto } from './dtos/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { GoogleDto } from '../google-user/dtos/google.dto';
 import { GoogleUserService } from 'src/google-user/google-user.service';
+import { GithubDto } from 'src/github-user/dtos/github.dto';
+import { GithubUserService } from 'src/github-user/github-user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly googleUserService: GoogleUserService,
+    private readonly githubUserService: GithubUserService,
     private jwtService: JwtService,
   ) {}
 
@@ -53,6 +56,20 @@ export class AuthService {
     }
 
     const payload = { sub: user.id, email: user.email, id: user.id };
+
+    return {
+      token: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  async githubLogin(profile: GithubDto) {
+    const user = await this.githubUserService.getByUsername(profile.username);
+
+    if (!user) {
+      await this.githubUserService.create(profile);
+    }
+
+    const payload = { sub: user.id, username: user.username, id: user.id };
 
     return {
       token: await this.jwtService.signAsync(payload),

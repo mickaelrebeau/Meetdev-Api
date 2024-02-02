@@ -19,16 +19,22 @@ import { Data } from 'src/data/model/data.entity';
 import { GoogleUser } from 'src/google-user/model/google.entity';
 import { GoogleUserService } from 'src/google-user/google-user.service';
 import { GoogleUserModule } from 'src/google-user/google-user.module';
+import { GithubStrategy } from './strategies/github.strategy';
+import { GithubUserModule } from 'src/github-user/github-user.module';
+import { GithubUserService } from 'src/github-user/github-user.service';
+import { GithubUser } from 'src/github-user/model/github.entity';
 
 dotenv.config();
 
 @Module({
   imports: [
     GoogleUserModule,
+    GithubUserModule,
     UserModule,
     PassportModule,
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([GoogleUser]),
+    TypeOrmModule.forFeature([GithubUser]),
     TypeOrmModule.forFeature([Data]),
     TypeOrmModule.forFeature([File]),
     JwtModule.register({
@@ -40,11 +46,13 @@ dotenv.config();
     AuthService,
     UserService,
     GoogleUserService,
+    GithubUserService,
     AvatarService,
     LocalStrategy,
     JwtStrategy,
     JwtAuthGuard,
     GoogleStatregy,
+    GithubStrategy,
   ],
   controllers: [AuthController],
 })

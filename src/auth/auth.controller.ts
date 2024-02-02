@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthentificationDto, LoginDto } from './dtos/auth.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { GoogleAuthGuard } from './guards/google.guard';
+import { GithubAuthGuard } from './guards/github.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -32,6 +33,22 @@ export class AuthController {
   async googleRedirect() {
     return {
       message: 'Logged in whith Google!',
+    };
+  }
+
+  @Get('github/login')
+  @UseGuards(GithubAuthGuard)
+  async githubLogin() {
+    return {
+      message: 'Logged in whith Github!',
+    };
+  }
+
+  @Get('github/redirect')
+  @UseGuards(GithubAuthGuard)
+  async githubRedirect() {
+    return {
+      message: 'Logged in whith Github!',
     };
   }
 }
