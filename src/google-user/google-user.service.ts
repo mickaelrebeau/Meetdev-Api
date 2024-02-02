@@ -24,10 +24,6 @@ export class GoogleUserService {
     return await this.googleUserRepository.save(user);
   }
 
-  async createGoogleUser(user: GoogleDto): Promise<GoogleUser> {
-    return await this.googleUserRepository.save(user);
-  }
-
   async update(id: string, user: GoogleDto): Promise<UpdateResult> {
     return await this.googleUserRepository.update(id, user);
   }
