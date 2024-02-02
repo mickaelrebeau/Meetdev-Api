@@ -11,6 +11,7 @@ import { AvatarModule } from './avatar/avatar.module';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
 import { GoogleUserModule } from './google-user/google-user.module';
+import { GithubUserModule } from './github-user/github-user.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { GoogleUserModule } from './google-user/google-user.module';
     AuthModule,
     DataModule,
     GoogleUserModule,
+    GithubUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
