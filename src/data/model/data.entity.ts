@@ -1,4 +1,6 @@
 import { File } from 'src/avatar/model/avatar.entity';
+import { GithubUser } from 'src/github-user/model/github.entity';
+import { GoogleUser } from 'src/google-user/model/google.entity';
 import { User } from 'src/user/model/user.entity';
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -33,6 +35,16 @@ export class Data {
 
   @OneToOne(() => User, (user) => user.data, { nullable: true })
   user: User;
+
+  @OneToOne(() => GoogleUser, (googleUser) => googleUser.data, {
+    nullable: true,
+  })
+  googleUser: GoogleUser;
+
+  @OneToOne(() => GithubUser, (githubUser) => githubUser.data, {
+    nullable: true,
+  })
+  githubUser: GithubUser;
 
   @OneToOne(() => File, (avatar) => avatar.data, { nullable: true })
   avatar: File;
