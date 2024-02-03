@@ -8,6 +8,9 @@ import { GoogleDto } from '../google-user/dtos/google.dto';
 import { GoogleUserService } from 'src/google-user/google-user.service';
 import { GithubDto } from 'src/github-user/dtos/github.dto';
 import { GithubUserService } from 'src/github-user/github-user.service';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class AuthService {
@@ -74,6 +77,14 @@ export class AuthService {
     return {
       token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async getUserFromAuthenticationToken(token: string) {
+    const payload = this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    return payload.sub;
   }
 
   hashData(data: string) {
