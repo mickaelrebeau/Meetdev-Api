@@ -2,7 +2,13 @@ import { File } from 'src/avatar/model/avatar.entity';
 import { GithubUser } from 'src/github-user/model/github.entity';
 import { GoogleUser } from 'src/google-user/model/google.entity';
 import { User } from 'src/user/model/user.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Data {
@@ -27,25 +33,29 @@ export class Data {
   @Column({ nullable: true })
   portfolio_url: string;
 
-  @Column('text', { array: true, nullable: true })
+  @Column('simple-array', { array: true, nullable: true })
   languages: string[];
 
   @Column('jsonb', { nullable: true })
   filters: Filters;
 
-  @OneToOne(() => User, (user) => user.data, { nullable: true })
+  @OneToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToOne(() => GoogleUser, (googleUser) => googleUser.data, {
+  @OneToOne(() => GoogleUser, {
     nullable: true,
   })
-  googleUser: GoogleUser;
+  @JoinColumn({ name: 'google_user_id' })
+  google_user: GoogleUser;
 
-  @OneToOne(() => GithubUser, (githubUser) => githubUser.data, {
+  @OneToOne(() => GithubUser, {
     nullable: true,
   })
-  githubUser: GithubUser;
+  @JoinColumn({ name: 'github_user_id' })
+  github_user: GithubUser;
 
-  @OneToOne(() => File, (avatar) => avatar.data, { nullable: true })
+  @OneToOne(() => File, { nullable: true })
+  @JoinColumn({ name: 'avatar_id' })
   avatar: File;
 }

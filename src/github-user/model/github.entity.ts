@@ -1,5 +1,12 @@
+import { Chats } from 'src/chats/model/chats.entity';
 import { Data } from 'src/data/model/data.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class GithubUser {
@@ -12,6 +19,9 @@ export class GithubUser {
   @Column()
   username: string;
 
-  @OneToOne(() => Data, (data) => data.githubUser, { nullable: true })
+  @OneToOne(() => Data, { nullable: true })
   data: Data;
+
+  @OneToMany(() => Chats, (chats) => chats.github_user)
+  chats: Chats[];
 }

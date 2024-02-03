@@ -30,6 +30,6 @@ export class File {
   @Column()
   size: number;
 
-  @OneToOne(() => Data, (data) => data.avatar)
+  @OneToOne(() => Data, { eager: true, nullable: true })
   data: Data;
 }

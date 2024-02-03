@@ -1,5 +1,12 @@
+import { Chats } from 'src/chats/model/chats.entity';
 import { Data } from 'src/data/model/data.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -15,6 +22,9 @@ export class User {
   @Column()
   password: string;
 
-  @OneToOne(() => Data, (data) => data.user, { nullable: true })
+  @OneToOne(() => Data, { nullable: true })
   data: Data;
+
+  @OneToMany(() => Chats, (chats) => chats.user)
+  chats: Chats[];
 }
