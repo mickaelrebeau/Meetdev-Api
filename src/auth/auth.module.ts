@@ -23,6 +23,7 @@ import { GithubStrategy } from './strategies/github.strategy';
 import { GithubUserModule } from 'src/github-user/github-user.module';
 import { GithubUserService } from 'src/github-user/github-user.service';
 import { GithubUser } from 'src/github-user/model/github.entity';
+import { ChatsService } from 'src/chats/chats.service';
 
 dotenv.config();
 
@@ -53,6 +54,7 @@ dotenv.config();
     JwtAuthGuard,
     GoogleStatregy,
     GithubStrategy,
+    ChatsService,
   ],
   controllers: [AuthController],
 })

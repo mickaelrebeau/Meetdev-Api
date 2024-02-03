@@ -12,6 +12,9 @@ import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
 import { GoogleUserModule } from './google-user/google-user.module';
 import { GithubUserModule } from './github-user/github-user.module';
+import { ChatsModule } from './chats/chats.module';
+import { GatewayModule } from './gateway/gateway.module';
+import { ChatGateway } from './gateway/gateway.gateway';
 
 @Module({
   imports: [
@@ -35,8 +38,10 @@ import { GithubUserModule } from './github-user/github-user.module';
     DataModule,
     GoogleUserModule,
     GithubUserModule,
+    ChatsModule,
+    GatewayModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
 export class AppModule {}
