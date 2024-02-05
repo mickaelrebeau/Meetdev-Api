@@ -1,6 +1,4 @@
 import { File } from 'src/avatar/model/avatar.entity';
-import { GithubUser } from 'src/github-user/model/github.entity';
-import { GoogleUser } from 'src/google-user/model/google.entity';
 import { User } from 'src/user/model/user.entity';
 import {
   Column,
@@ -42,18 +40,6 @@ export class Data {
   @OneToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @OneToOne(() => GoogleUser, {
-    nullable: true,
-  })
-  @JoinColumn({ name: 'google_user_id' })
-  google_user: GoogleUser;
-
-  @OneToOne(() => GithubUser, {
-    nullable: true,
-  })
-  @JoinColumn({ name: 'github_user_id' })
-  github_user: GithubUser;
 
   @OneToOne(() => File, { nullable: true })
   @JoinColumn({ name: 'avatar_id' })
