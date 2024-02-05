@@ -16,28 +16,20 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { GoogleStatregy } from './strategies/google.strategy';
 import { Data } from 'src/data/model/data.entity';
-import { GoogleUser } from 'src/google-user/model/google.entity';
-import { GoogleUserService } from 'src/google-user/google-user.service';
-import { GoogleUserModule } from 'src/google-user/google-user.module';
 import { GithubStrategy } from './strategies/github.strategy';
-import { GithubUserModule } from 'src/github-user/github-user.module';
-import { GithubUserService } from 'src/github-user/github-user.service';
-import { GithubUser } from 'src/github-user/model/github.entity';
 import { ChatsService } from 'src/chats/chats.service';
+import { Chats } from 'src/chats/model/chats.entity';
 
 dotenv.config();
 
 @Module({
   imports: [
-    GoogleUserModule,
-    GithubUserModule,
     UserModule,
     PassportModule,
     TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([GoogleUser]),
-    TypeOrmModule.forFeature([GithubUser]),
     TypeOrmModule.forFeature([Data]),
     TypeOrmModule.forFeature([File]),
+    TypeOrmModule.forFeature([Chats]),
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
@@ -46,8 +38,6 @@ dotenv.config();
   providers: [
     AuthService,
     UserService,
-    GoogleUserService,
-    GithubUserService,
     AvatarService,
     LocalStrategy,
     JwtStrategy,
