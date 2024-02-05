@@ -1,9 +1,8 @@
-import { GithubUser } from 'src/github-user/model/github.entity';
-import { GoogleUser } from 'src/google-user/model/google.entity';
 import { User } from 'src/user/model/user.entity';
 import {
   Column,
   CreateDateColumn,
+  DeepPartial,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -18,17 +17,13 @@ export class Chats {
   @Column()
   message: string;
 
-  @ManyToOne(() => User, { eager: true, nullable: true })
-  @JoinColumn({ name: 'chats_user_id' })
-  user: User;
+  @ManyToOne(() => User, { eager: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_sender_id' })
+  userSender: DeepPartial<User>;
 
-  @ManyToOne(() => GoogleUser, { eager: true, nullable: true })
-  @JoinColumn({ name: 'chats_google_user_id' })
-  google_user: User;
-
-  @ManyToOne(() => GithubUser, { eager: true, nullable: true })
-  @JoinColumn({ name: 'chats_github_user_id' })
-  github_user: User;
+  @ManyToOne(() => User, { eager: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_receiver_id' })
+  userReceiver: DeepPartial<User>;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

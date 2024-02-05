@@ -5,12 +5,14 @@ import { AuthService } from 'src/auth/auth.service';
 import { ChatsDto } from './dtos/chats.dto';
 import { Chats } from './model/chats.entity';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ChatsService {
   constructor(
-    private authService: AuthService,
+    @InjectRepository(Chats)
     private chatsRespository: Repository<Chats>,
+    private authService: AuthService,
   ) {}
 
   async getUserFromSocket(socket: Socket) {
