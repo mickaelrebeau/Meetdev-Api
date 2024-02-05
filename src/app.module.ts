@@ -10,11 +10,9 @@ import { UserModule } from './user/user.module';
 import { AvatarModule } from './avatar/avatar.module';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
-import { GoogleUserModule } from './google-user/google-user.module';
-import { GithubUserModule } from './github-user/github-user.module';
 import { ChatsModule } from './chats/chats.module';
 import { GatewayModule } from './gateway/gateway.module';
-import { ChatGateway } from './gateway/gateway.gateway';
+import { LikesModule } from './likes/likes.module';
 
 @Module({
   imports: [
@@ -36,12 +34,11 @@ import { ChatGateway } from './gateway/gateway.gateway';
     AvatarModule,
     AuthModule,
     DataModule,
-    GoogleUserModule,
-    GithubUserModule,
     ChatsModule,
     GatewayModule,
+    LikesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ChatGateway],
+  providers: [AppService],
 })
 export class AppModule {}
