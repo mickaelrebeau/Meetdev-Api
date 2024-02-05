@@ -10,19 +10,18 @@ import {
 import { User } from './model/user.entity';
 import { UserService } from './user.service';
 import { UpdateResult } from 'typeorm';
-import { GoogleUser } from '../google-user/model/google.entity';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getAll(): Promise<(User | GoogleUser)[]> {
+  getAll(): Promise<User[]> {
     return this.userService.getAll();
   }
 
   @Get(':id')
-  getById(@Param('id') id: string): Promise<User | GoogleUser | null> {
+  getById(@Param('id') id: string): Promise<User | null> {
     return this.userService.getById(id);
   }
 
