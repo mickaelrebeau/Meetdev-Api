@@ -34,6 +34,9 @@ export class Data {
   @Column('simple-array', { array: true, nullable: true })
   languages: string[];
 
+  @Column('simple-array', { array: true, nullable: true })
+  programmingLanguages: string[];
+
   @Column('jsonb', { nullable: true })
   filters: Filters;
 
