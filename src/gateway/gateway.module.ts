@@ -7,26 +7,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatsModule } from 'src/chats/chats.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserService } from 'src/user/user.service';
-import { AvatarService } from 'src/avatar/avatar.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/model/user.entity';
-import { File } from 'src/avatar/model/avatar.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Chats]),
     TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([File]),
     ChatsModule,
     AuthModule,
   ],
-  providers: [
-    ChatGateway,
-    AuthService,
-    ChatsService,
-    UserService,
-    AvatarService,
-    JwtService,
-  ],
+  providers: [ChatGateway, AuthService, ChatsService, UserService, JwtService],
 })
 export class GatewayModule {}
