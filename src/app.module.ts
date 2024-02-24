@@ -7,12 +7,12 @@ import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
-import { AvatarModule } from './avatar/avatar.module';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
 import { ChatsModule } from './chats/chats.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { LikesModule } from './likes/likes.module';
+import { ImageModule } from './image/image.module';
 
 @Module({
   imports: [
@@ -31,12 +31,12 @@ import { LikesModule } from './likes/likes.module';
     }),
     DatabaseModule,
     UserModule,
-    AvatarModule,
     AuthModule,
     DataModule,
     ChatsModule,
     GatewayModule,
     LikesModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
