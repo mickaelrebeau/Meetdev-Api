@@ -43,4 +43,9 @@ export class UserService {
   async getByEmail(email: string): Promise<User | null> {
     return await this.userRepository.findOneBy({ email });
   }
+
+  async getDisplayNamebyId(id: string): Promise<{ displayName: string }> {
+    const user = await this.userRepository.findOneBy({ id });
+    return { displayName: user.displayName };
+  }
 }
