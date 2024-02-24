@@ -1,4 +1,3 @@
-import { File } from 'src/avatar/model/avatar.entity';
 import { User } from 'src/user/model/user.entity';
 import {
   Column,
@@ -43,8 +42,4 @@ export class Data {
   @OneToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @OneToOne(() => File, { nullable: true })
-  @JoinColumn({ name: 'avatar_id' })
-  avatar: File;
 }

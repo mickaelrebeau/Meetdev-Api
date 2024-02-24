@@ -1,19 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Data } from './model/data.entity';
-import { File } from 'src/avatar/model/avatar.entity';
-import { AvatarModule } from 'src/avatar/avatar.module';
 import { DataService } from './data.service';
 import { DataController } from './data.controller';
-import { AvatarService } from 'src/avatar/avatar.service';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/model/user.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Data]),
-    TypeOrmModule.forFeature([File]),
-    AvatarModule,
-  ],
-  providers: [DataService, AvatarService],
+  imports: [TypeOrmModule.forFeature([Data]), TypeOrmModule.forFeature([User])],
+  providers: [DataService, UserService],
   controllers: [DataController],
 })
 export class DataModule {}

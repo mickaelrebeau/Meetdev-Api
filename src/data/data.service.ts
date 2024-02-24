@@ -2,34 +2,50 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Data } from './model/data.entity';
 import { Repository, UpdateResult } from 'typeorm';
-import { AvatarService } from 'src/avatar/avatar.service';
+import { DataDto } from './dtos/data.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class DataService {
   constructor(
     @InjectRepository(Data)
     private dataRepository: Repository<Data>,
-    private fileService: AvatarService,
+    private readonly userService: UserService,
   ) {}
 
   async getById(id: string): Promise<Data | null> {
-    const data = await this.dataRepository.findOneBy({ id });
-    const file = await this.fileService.getByDataId(data.id);
+    const user = await this.userService.getById(id);
 
-    data.avatar = file;
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const data = await this.dataRepository.findOneBy({ user });
+
+    if (!data) {
+      return null;
+    }
+
     return data;
   }
 
-  async create(data: Data): Promise<Data> {
-    return await this.dataRepository.save(data);
+  async create(id: string, data: DataDto): Promise<Data> {
+    const user = await this.userService.getById(id);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const newData = {
+      ...data,
+      user,
+    };
+
+    return await this.dataRepository.save(newData);
   }
 
-  async update(
-    id: string,
-    data: Data,
-    newFile: Express.Multer.File,
-  ): Promise<UpdateResult> {
-    const existingData = await this.getById(id);
+  async update(id: string, data: DataDto): Promise<UpdateResult> {
+    const exsistingData = await this.dataRepository.findOneBy({ id });
 
     const updatedData = {
       bio: data.bio,
@@ -40,26 +56,21 @@ export class DataService {
       portfolio_url: data.portfolio_url,
       languages: data.languages,
       filters: data.filters,
-      user: data.user,
-      avatar: data.avatar,
+      user: exsistingData.user,
     };
 
-    const dataUpdateResult = await this.dataRepository.update(id, updatedData);
-
-    const uploadedFile = await this.fileService.addFileToData(id, newFile);
-
-    existingData.avatar = uploadedFile;
-
-    await this.dataRepository.save(existingData);
-
-    return dataUpdateResult;
+    return await this.dataRepository.update(id, updatedData);
   }
 
-  async destroyFiles(id: string): Promise<void> {
-    const note = await this.getById(id);
+  async delete(id: string): Promise<void> {
+    const user = await this.userService.getById(id);
 
-    const file = await this.fileService.getByDataId(note.id);
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-    await this.fileService.delete(file.id);
+    const data = await this.dataRepository.findOneBy({ user });
+
+    await this.dataRepository.delete(data.id);
   }
 }
