@@ -4,7 +4,7 @@ export class LoginDto {
 }
 
 export class AuthentificationDto {
-  name: string;
+  displayName: string;
   email: string;
   password: string;
 }

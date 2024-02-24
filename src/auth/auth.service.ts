@@ -1,5 +1,4 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from 'src/user/model/user.entity';
 import { UserService } from 'src/user/user.service';
 import * as argon2 from 'argon2';
 import { AuthentificationDto, LoginDto } from './dtos/auth.dto';
@@ -16,19 +15,22 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(user: AuthentificationDto): Promise<User> {
+  async signup(user: AuthentificationDto) {
+    const nameExist = await this.userService.getByName(user.displayName);
     const emailExist = await this.userService.getByEmail(user.email);
 
-    if (emailExist) {
-      throw new Error('Error email or password invalid');
+    if (emailExist || nameExist) {
+      throw new UnauthorizedException('Invalid username, email or password');
     }
 
     const hash = await this.hashData(user.password);
 
-    return await this.userService.create({
+    const newUser = await this.userService.create({
       ...user,
       password: hash,
     });
+
+    return { email: newUser.email, id: newUser.id };
   }
 
   async signin(body: LoginDto) {
@@ -36,13 +38,14 @@ export class AuthService {
     const passwordMatches = await argon2.verify(user.password, body.password);
 
     if (user.email !== body.email || !passwordMatches) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const payload = { sub: user.id, email: user.email, id: user.id };
 
     return {
       token: await this.jwtService.signAsync(payload),
+      userId: user.id,
     };
   }
 
