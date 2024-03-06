@@ -1,9 +1,9 @@
 import { Controller, Post, Param, Get } from '@nestjs/common';
-import { LikesService } from './likes.service';
+import { LikeService } from './like.service';
 
 @Controller('likes')
-export class LikesController {
-  constructor(private readonly likeService: LikesService) {}
+export class LikeController {
+  constructor(private readonly likeService: LikeService) {}
 
   @Post(':fromUserId/like/:toUserId')
   async likeUser(
