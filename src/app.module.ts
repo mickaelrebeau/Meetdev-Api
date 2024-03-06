@@ -9,10 +9,11 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
-import { ChatsModule } from './chats/chats.module';
+import { ChatModule } from './chat/chat.module';
 import { GatewayModule } from './gateway/gateway.module';
-import { LikesModule } from './likes/likes.module';
+import { LikeModule } from './like/like.module';
 import { ImageModule } from './image/image.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -33,10 +34,11 @@ import { ImageModule } from './image/image.module';
     UserModule,
     AuthModule,
     DataModule,
-    ChatsModule,
+    ChatModule,
     GatewayModule,
-    LikesModule,
+    LikeModule,
     ImageModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
