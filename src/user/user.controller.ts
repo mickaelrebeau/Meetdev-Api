@@ -25,13 +25,6 @@ export class UserController {
     return this.userService.getById(id);
   }
 
-  @Get(':id/displayname')
-  getDisplayNamebyId(
-    @Param('id') id: string,
-  ): Promise<{ displayName: string } | null> {
-    return this.userService.getDisplayNamebyId(id);
-  }
-
   @Post()
   create(@Body() user: User): Promise<User> {
     return this.userService.create(user);
