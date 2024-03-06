@@ -13,8 +13,8 @@ import { jwtConstants } from './utils/constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Data } from 'src/data/model/data.entity';
-import { ChatsService } from 'src/chats/chats.service';
-import { Chats } from 'src/chats/model/chats.entity';
+import { ChatService } from 'src/chat/chat.service';
+import { Chat } from 'src/chat/model/chat.entity';
 
 dotenv.config();
 
@@ -22,12 +22,10 @@ dotenv.config();
   imports: [
     UserModule,
     PassportModule,
-    TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([Data]),
-    TypeOrmModule.forFeature([Chats]),
+    TypeOrmModule.forFeature([User, Data, Chat]),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '7d' },
     }),
   ],
   providers: [
@@ -36,7 +34,7 @@ dotenv.config();
     LocalStrategy,
     JwtStrategy,
     JwtAuthGuard,
-    ChatsService,
+    ChatService,
   ],
   controllers: [AuthController],
 })
