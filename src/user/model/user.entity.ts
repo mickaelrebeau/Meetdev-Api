@@ -1,5 +1,5 @@
-import { Data } from 'src/data/model/data.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Chat } from 'src/chat/model/chat.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -18,6 +18,6 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
-  @OneToOne(() => Data, { nullable: true })
-  data: Data;
+  @ManyToMany(() => Chat, (chat) => chat.users)
+  chats: Chat[];
 }
