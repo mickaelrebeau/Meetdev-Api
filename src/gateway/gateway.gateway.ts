@@ -1,35 +1,62 @@
 import {
   ConnectedSocket,
   MessageBody,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { ChatsService } from 'src/chats/chats.service';
+import { MessageService } from 'src/message/message.service';
+import { ContentDto, ChatRoomDto } from './dtos/content.dto';
 
-@WebSocketGateway()
-export class ChatGateway {
+@WebSocketGateway(80)
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(private messageService: MessageService) {
+    console.log('Gateway created');
+  }
+
   @WebSocketServer()
-  server: Server;
+  private server: Server;
 
-  constructor(private chatsService: ChatsService) {}
+  handleConnection(socket: Socket) {
+    return this.messageService.getUserIdFromSocket(socket);
+  }
 
-  async handleConnection(socket: Socket) {
-    return await this.chatsService.getUserFromSocket(socket);
+  @SubscribeMessage('onJoinRoom')
+  onJoinRoom(
+    @MessageBody() data: ChatRoomDto,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    socket.join(data.chatId);
+  }
+
+  @SubscribeMessage('onLeaveRoom')
+  onLeaveRoom(
+    @MessageBody() data: ChatRoomDto,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    socket.leave(data.chatId);
   }
 
   @SubscribeMessage('send_message')
   async listenForMessages(
-    @MessageBody() message: string,
+    @MessageBody() data: ContentDto,
     @ConnectedSocket() socket: Socket,
   ) {
-    const user = await this.handleConnection(socket);
-    this.server.sockets.emit('receive_message', {
-      message,
+    const userId = await this.handleConnection(socket);
+    console.log({ userId });
+
+    const newMessage = await this.messageService.createMessage({
+      content: data.content,
+      userId,
+      chatId: data.chatId,
     });
 
-    await this.chatsService.createMessage({ message }, user);
+    this.server.to(data.chatId).emit('receive_message', {
+      message: newMessage,
+    });
   }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket) {
